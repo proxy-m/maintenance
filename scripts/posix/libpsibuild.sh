@@ -1,5 +1,4 @@
 # use REV_DATE to build Psi+ in state before this date:
-#[ -z "${REV_DATE}" ] && REV_DATE=`date -dnext-week +%Y-%m-%d` # this line can be removed, but it shows example of REV_DATE format
 # do not forget, that REV_DATE always allow you to get revision before "master".
 # it will not give you "master" even if you set date to 9999-12-31. (i wrote this in 2014 year.)
 # so if you want "master", then don't use REV_DATE, leave it as empty string.
@@ -475,10 +474,8 @@ git_fetch() {
       REV=`git rev-list master -n 1 --first-parent --before=${REV_DATE}`
       [ -z "${REV}" ] && {
         text="git revision before ${REV_DATE} does not exist (remote=${remote}, target=${target})"
-        [ $allowmeit -eq 1 ] && {
-          log "!!!WARNING: $text"
-        } || {
-          die "$text"
+        [ $allowmeit = 1 ] || die "$text"
+        log "!!!WARNING: $text"
         }  
       } || {  
         log "checkout to ${REV} (${REV_DATE}) .."
